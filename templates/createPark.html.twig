@@ -1,0 +1,69 @@
+{% extends "main/base.html" %}
+
+{% block title %}Автопарк - добавить{% endblock %}
+
+{% block head %}
+
+    {{ parent() }}
+
+{% endblock %}
+
+{% block content %}
+
+    <h1 class="text-center">Добавить новый</h1>
+
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <h2 class="text-left">Автопарк</h2>
+
+                {% if errors %}
+                    {% for error in errors %}
+                        <div class="row justify-content-center pt-1 pb-1">
+                            <span class="badge badge-pill badge-warning  col-md-6">{{ error }}</span><br>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+                <form method="post" action="avtopark/create">
+                    <div class="form-group row justify-content-between">
+                        <label for="exampleInputEmail1" class="align-self-center col">Название:</label>
+                        <input type="text" name="avtoparkName" class="form-control col-8" value="{{ avtoparkName }}" placeholder="Название">
+
+                    </div>
+                    <div class="form-group row justify-content-between">
+                        <label for="exampleInputPassword1" class="align-self-center col">Адрес:</label>
+                        <input type="text" name="adres" class="form-control col-8" placeholder="Адрес">
+                    </div>
+                    <div class="form-group row justify-content-between">
+                        <label for="exampleInputPassword1" class="align-self-center col">График работы:</label>
+                        <input type="text" name="grfik" class="form-control col-8" placeholder="График работы">
+                    </div>
+                    <hr>
+                    <h2 class="text-left">Машины</h2>
+                    <div class="form-row">
+                        <div class="col">
+                            <p class="mt-2 mb-2">Номер машины</p>
+                            <input type="text" class="form-control" placeholder="Номер машины" >
+                        </div>
+                        <div class="col">
+                            <p class="mt-2 mb-2">Имя водителя</p>
+                            <input type="text" class="form-control" placeholder="Имя водителя">
+                        </div>
+                    </div>
+
+                    <div class="d-flex flex-column pt-3" style="width: 40px">
+                        <button type="button" class="btn btn-outline-info mb-1">-</button>
+                        <button type="button" class="btn btn-outline-info">+</button>
+                    </div>
+
+                    <button type="submit" name="save" class="btn btn-primary mt-3">Сохранить</button>
+                </form>
+
+            </div>
+        </div>
+
+
+{% endblock %}
+
+
+
