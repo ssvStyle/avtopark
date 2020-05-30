@@ -30,7 +30,6 @@ return [
     '/avtopark' => 'park@showAll',
     '/cars' => 'cars@showAll',
     '/avtopark/create' => 'park@create',
-    //'/register' => 'authorization@register',
     '/login' => 'authorization@login',
     //'/logout' => 'authorization@logout',
 ]

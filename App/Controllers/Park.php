@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use \App\Servise\Validation;
 use Core\BaseController;
 
 class Park extends BaseController
@@ -15,20 +16,27 @@ class Park extends BaseController
     public function create()
     {
 
-        if (empty($_POST['avtoparkName']) && isset($_POST['save'])) {
+        $err = [];
 
-            $this->view->addGlobal(
-                'errors', [
-                'name' => 'Пустое поле название!!!',
-                'avto' => 'empty field',
-                //'adres' => 'empty field'
-            ]);
+        if ( isset($_POST['save']) ) {
 
+            $err = Validation::avtopark($_POST);
 
+            if (empty($err)) {
+
+                #TODO save
+
+            }
 
         }
 
+        $this->view->addGlobal('errors', $err);
+
         $this->view->addGlobal('avtoparkName', $_POST['avtoparkName'] ?? '');
+
+        $this->view->addGlobal('avtoparkAdres', $_POST['avtoparkAdres'] ?? '');
+
+        $this->view->addGlobal('avtoparkSchedule', $_POST['avtoparkSchedule'] ?? '');
 
         return $this->view->display('createPark.html.twig');
     }
