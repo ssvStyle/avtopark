@@ -1,0 +1,94 @@
+{% extends "main/base.html" %}
+
+{% block title %}Автопарк - {{ title }}{% endblock %}
+
+{% block head %}
+
+    {{ parent() }}
+
+{% endblock %}
+
+{% block content %}
+
+    <h1 class="text-center">{{ title }}</h1>
+
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <h2 class="text-left">Автопарк</h2>
+
+                {% if errors is not null %}
+                    {% for error in errors %}
+                        <div class="row justify-content-center pt-1 pb-1">
+                            <span class="badge badge-pill badge-warning  col-md-6">{{ error }}</span><br>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+                <form method="post" action="avtopark/create">
+                    <div class="form-group row justify-content-between">
+                        <label for="exampleInputEmail1" class="align-self-center col">Название:</label>
+                        <input type="text" name="avtoparkName" class="form-control col-8" value="{{ avtoparkName }}" placeholder="Название">
+
+                    </div>
+                    <div class="form-group row justify-content-between">
+                        <label for="exampleInputPassword1" class="align-self-center col">Адрес:</label>
+                        <input type="text" name="avtoparkAdres" class="form-control col-8" placeholder="Адрес" value="{{ avtoparkAdres }}">
+                    </div>
+                    <div class="form-group row justify-content-between">
+                        <label for="exampleInputPassword1" class="align-self-center col">График работы:</label>
+                        <input type="text" name="avtoparkSchedule" class="form-control col-8" placeholder="График работы" value="{{ avtoparkSchedule }}">
+                    </div>
+                    <hr>
+                    <h2 class="text-left">Машины</h2>
+                    <div id="cars">
+                            {% if cars is not empty %}
+                                <div class="row">
+                                    <p class="mt-2 mb-1 col-md-1 align-self-center">#</p>
+                                    <p class="mt-2 mb-2 col-md-3">Номер машины</p>
+                                    <p class="mt-2 mb-2 col-md-3">Имя водителя</p>
+                                    <p class="mt-2 mb-2 col-md-2 text-center">Редактировать</p>
+                                    <p class="mt-2 mb-2 col-md-2 text-center">Удалить</p>
+
+                                </div>
+                                {% for avto in cars  %}
+                                     <div id="id_{{ avto.id }}"  class="row">
+                                           <p class="m-0 col-md-1 align-self-center"> {{ avto.id }}: </p>
+                                           <div id="num_{{ avto.id }}" class="col-md-3 pt-1 pb-1">{{ avto.num }}</div>
+                                           <div id="name_{{ avto.id }}" class=" col-md-3 pt-1 pb-1">{{ avto.name }}</div>
+                                           <div class="col-md-2 pt-1 pb-1 text-center">
+                                                <img src="public/img/edit.png" onclick="editBlock({{ avto.id }})" style="cursor: pointer" alt="Редактировать" width="20px">
+                                           </div>
+                                           <div class="col-md-2 pt-1 pb-1 text-center">
+                                                <a href="{{ avto.id }}"><img src="public/img/delete.png" onclick="" alt="Редактировать" width="20px"></a>
+                                           </div>
+                                     </div>
+                                 {% endfor %}
+                            {% else %}
+                                <div id="avto" class="row">
+                                    <p class="mt-2 mb-1 col-md-1 align-self-center">#</p>
+                                    <p class="mt-2 mb-2 col-md-3">Номер машины</p>
+                                    <p class="mt-2 mb-2 col-md-3">Имя водителя</p>
+                                </div>
+
+                            {% endif %}
+
+                            <div id="newCar" class="container m-0 p-0">
+                            </div>
+                        </div>
+                        <div class="d-flex flex-row pt-3" style="width: 40px">
+                            <button type="button" id="delCar" class="btn btn-outline-info mr-3">-</button>
+                            <button type="button" id="addCar" class="btn btn-outline-info">+</button>
+                        </div>
+
+
+                    <button type="submit" id="submit" name="save" class="btn btn-primary mt-3">Сохранить</button>
+                </form>
+
+            </div>
+        </div>
+
+
+{% endblock %}
+
+
+

@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 
 class Db
@@ -13,7 +13,14 @@ class Db
         $this->dbh = new \PDO('mysql:host=' . $config['host'] . ';dbname=' . $config['dbname'].';charset=utf8', $config['user'], $config['pass']);
     }
 
-    public function query($sql, $data = [], $class)
+    public function query($sql, $data = [])
+    {
+        $sth = $this->dbh->prepare($sql);
+        $sth->execute($data);
+        return  $sth->fetchAll();
+    }
+
+    public function queryRetObj($sql, $data = [], $class)
     {
         $sth = $this->dbh->prepare($sql);
         $sth->execute($data);

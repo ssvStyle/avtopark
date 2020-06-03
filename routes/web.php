@@ -27,10 +27,12 @@
 return [
     '/' => 'park@showAll',
     '/home' => 'park@showAll',
-    '/avtopark' => 'park@showAll',
-    '/cars' => 'cars@showAll',
+    '/catalog/park/all' => 'park@showAll',
+    '/catalog/cars/all' => 'cars@showAll',
     '/avtopark/create' => 'park@create',
     '/login' => 'authorization@login',
+    '/avtopark/edit/{id}' => 'park@edit',
+    '/avtopark/delete/park/{id}' => 'park@delete',
     //'/logout' => 'authorization@logout',
 ]
 

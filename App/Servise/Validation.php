@@ -19,9 +19,9 @@ abstract class Validation
             $err[] = $emptyField . ' "Адрес"';
         }
 
-        if (isset($post['avto_num']) && isset($post['avto_name'])){
+        if (isset($post['new_avto_num'], $post['new_avto_name'])){
 
-            $avto = array_combine($post['avto_num'], $post['avto_name']);
+            $avto = array_combine($post['new_avto_num'], $post['new_avto_name']);
 
             foreach ( $avto as $k => $v ) {
 

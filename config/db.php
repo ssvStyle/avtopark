@@ -2,7 +2,7 @@
 
 return [
         'host' => '127.0.0.53',
-        'dbname' => 'beejee',
+        'dbname' => 'cloud',
         'user' => 'root',
         'pass' => '',
     ];

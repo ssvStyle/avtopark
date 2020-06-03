@@ -13,11 +13,42 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-8 text-center">
-
                 <h1>Автопарк</h1>
+                <div class="container">
+                        <div class="text-black-50 row text-left">
+                                <p class="m-0 col-md-3">Название</p>
+                                <p class="m-0 col-md-3">Адрес</p>
+                                <p class="m-0 col-md-3">Расписание</p>
+                                <p class="m-0 col-md-3 text-center">Редактировать</p>
 
-                <p>Автопарк</p>
 
+                        </div>
+                        {% for obj in avtopark  %}
+                            <div class="row pt-1 border-top text-left">
+
+                                <p class="m-0 col-md-3">{{ obj.name }}</p>
+                                <p class="m-0 col-md-3">{{ obj.adres }}</p>
+                                <p class="m-0 col-md-3">{{ obj.schedule  }}</p>
+                                    <div class="col-md-3 text-center">
+                                        <a href="avtopark/edit/{{ obj.id }}">
+                                            <img src="public/img/edit.png" alt="Редактировать" width="20px">
+                                        </a>
+                                    </div>
+
+                            </div>
+                                <h6 class="pl-3 text-left text-black-50">Авто в парке:</h6>
+                                <div class="col-md-4 flex-row d-flex p-0 text-black-50 text-left">
+                                    <p class="m-0 col-md-6">Номер</p>
+                                    <p class="m-0 col-md-6">Владелец</p>
+                                </div>
+                                {% for avto in obj.getCars()  %}
+                                        <div class="col-md-4 flex-row d-flex p-0 text-left border-top">
+                                            <p class="m-0 col-md-6">{{ avto.num }}</p>
+                                            <p class="m-0 col-md-6">{{ avto.name }}</p>
+                                        </div>
+                                {% endfor %}
+                        {% endfor %}
+                </div>
             </div>
         </div>
     </div>
