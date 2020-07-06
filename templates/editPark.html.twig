@@ -14,8 +14,21 @@
 
     <div class="container">
         <div class="row justify-content-center">
-            <div class="col-md-8">
-                <h2 class="text-left">Автопарк</h2>
+            <div class="col-md-10">
+
+                {% if avtoparkId %}
+                <div class="col-md-12 justify-content-sm-between d-flex flex-row pb-3 p-0 m-0">
+                    <h2 class="text-left">Автопарк - {{ avtoparkName }}</h2>
+                    <div class="col-md-2 pt-1 pb-1 text-right m-0 p-0">
+                        <a href="avtopark/delete/{{ avtoparkId }}"><img src="public/img/delete.png" alt="Удалить" width="30px"></a>
+                    </div>
+                </div>
+                {% else %}
+                    <h2 class="text-left">Автопарк</h2>
+                {% endif %}
+
+
+                <div id="err"></div>
 
                 {% if errors is not null %}
                     {% for error in errors %}
@@ -24,7 +37,8 @@
                         </div>
                     {% endfor %}
                 {% endif %}
-                <form method="post" action="avtopark/create">
+                <form method="post" action="avtopark/save">
+                    <input type="hidden" value="{{ avtoparkId }}" name="avtoparkId">
                     <div class="form-group row justify-content-between">
                         <label for="exampleInputEmail1" class="align-self-center col">Название:</label>
                         <input type="text" name="avtoparkName" class="form-control col-8" value="{{ avtoparkName }}" placeholder="Название">
@@ -44,22 +58,26 @@
                             {% if cars is not empty %}
                                 <div class="row">
                                     <p class="mt-2 mb-1 col-md-1 align-self-center">#</p>
-                                    <p class="mt-2 mb-2 col-md-3">Номер машины</p>
-                                    <p class="mt-2 mb-2 col-md-3">Имя водителя</p>
+                                    <p class="mt-2 mb-2 col-md-2">Номер машины</p>
+                                    <p class="mt-2 mb-2 col-md-2">Имя водителя</p>
                                     <p class="mt-2 mb-2 col-md-2 text-center">Редактировать</p>
+                                    <p class="mt-2 mb-2 col-md-2 text-center">Отвязать от парка</p>
                                     <p class="mt-2 mb-2 col-md-2 text-center">Удалить</p>
 
                                 </div>
                                 {% for avto in cars  %}
                                      <div id="id_{{ avto.id }}"  class="row">
                                            <p class="m-0 col-md-1 align-self-center"> {{ avto.id }}: </p>
-                                           <div id="num_{{ avto.id }}" class="col-md-3 pt-1 pb-1">{{ avto.num }}</div>
-                                           <div id="name_{{ avto.id }}" class=" col-md-3 pt-1 pb-1">{{ avto.name }}</div>
+                                           <div id="num_{{ avto.id }}" class="col-md-2 pt-1 pb-1">{{ avto.num }}</div>
+                                           <div id="name_{{ avto.id }}" class=" col-md-2 pt-1 pb-1">{{ avto.name }}</div>
                                            <div class="col-md-2 pt-1 pb-1 text-center">
                                                 <img src="public/img/edit.png" onclick="editBlock({{ avto.id }})" style="cursor: pointer" alt="Редактировать" width="20px">
                                            </div>
                                            <div class="col-md-2 pt-1 pb-1 text-center">
-                                                <a href="{{ avto.id }}"><img src="public/img/delete.png" onclick="" alt="Редактировать" width="20px"></a>
+                                                <img src="public/img/rem-from-park.png" onclick="removeFromPark({{ avtoparkId }}, {{ avto.id }})" style="cursor: pointer" alt="Удалить из парка" width="20px">
+                                           </div>
+                                           <div class="col-md-2 pt-1 pb-1 text-center">
+                                                <img src="public/img/delete.png" id="{{ avto.id }}" class="deleteCar" style="cursor: pointer" alt="Удалить" width="20px">
                                            </div>
                                      </div>
                                  {% endfor %}

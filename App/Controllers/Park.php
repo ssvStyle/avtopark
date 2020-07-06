@@ -11,6 +11,10 @@ class Park extends BaseController
 
     public function showAll()
     {
+        $this->view->addGlobal('result', $_SESSION['result'] ?? '');
+
+        unset($_SESSION['result']);
+
         $this->view->addGlobal('avtopark', Avtopark::get('park'));
 
         return $this->view->display('park.html.twig');
@@ -18,25 +22,12 @@ class Park extends BaseController
 
     public function create()
     {
-        var_dump($_POST);
-
-        $err = [];
-
-        if ( isset($_POST['save']) ) {
-
-            $err = Validation::avtopark($_POST);
-
-            if (empty($err)) {
-
-
-
-            }
-
-        }
 
         $this->view->addGlobal('title', 'Добавить новый');
 
-        $this->view->addGlobal('errors', $err);
+        $this->view->addGlobal('errors', $_SESSION['newApErr'] ?? '');
+
+        unset($_SESSION['newApErr']);
 
         $this->view->addGlobal('avtoparkName', $_POST['avtoparkName'] ?? '');
 
@@ -50,35 +41,94 @@ class Park extends BaseController
 
     public function edit()
     {
+        $this->view->addGlobal('title', 'Редактировать');
+
         $avtopark = Avtopark::getById( (int)$this->data['id'], 'park' );
 
-        $err = [];
+        if ($avtopark === null) {
 
-        if ( isset($_POST['save']) ) {
+            $this->view->addGlobal('errors', ['notExist' => 'Такого парка не существует!']);
 
-            $err = Validation::avtopark($_POST);
+        } else {
 
-            if (empty($err)) {
+            $this->view->addGlobal('errors', $_SESSION['newApErr'] ?? '');
 
-                #TODO save
+            $this->view->addGlobal('avtoparkId', $avtopark->id);
 
-            }
+            $this->view->addGlobal('avtoparkName', $avtopark->name);
+
+            $this->view->addGlobal('avtoparkAdres', $avtopark->adres);
+
+            $this->view->addGlobal('avtoparkSchedule', $avtopark->schedule);
+
+            $this->view->addGlobal('cars', $avtopark->getCars());
 
         }
 
-        $this->view->addGlobal('title', 'Редактировать');
-
-        $this->view->addGlobal('errors', $err);
-
-        $this->view->addGlobal('avtoparkName', $avtopark->name);
-
-        $this->view->addGlobal('avtoparkAdres', $avtopark->adres);
-
-        $this->view->addGlobal('avtoparkSchedule', $avtopark->schedule);
-
-        $this->view->addGlobal('cars', $avtopark->getCars());
-
         return $this->view->display('editPark.html.twig');
+
     }
+
+    public function save()
+    {
+
+        if (!empty($_POST['avtoparkId'])) {
+
+            $err = Validation::avtopark($_POST);
+
+            if ( empty($err) ) {
+
+                Avtopark::updatePark($_POST);
+
+                $_SESSION['result'] = 'Парк обновлён';
+
+            } else {
+
+                $_SESSION['newApErr'] = $err;
+
+                header('Location: ../avtopark/edit/' . $_POST['avtoparkId']);
+
+            }
+
+        } else {
+
+                if ( isset($_POST['save']) ) {
+
+                    $err = Validation::avtopark($_POST);
+
+                    if ( empty($err) ) {
+
+                        Avtopark::savePark($_POST);
+
+                        $_SESSION['result'] = 'Новый парк добавлен';
+
+                    } else {
+
+                        $_SESSION['newApErr'] = $err;
+
+                        header('Location: ../avtopark/create');
+
+                    }
+
+                }
+
+        }
+
+        header('Location: ../catalog/park/all');
+
+    }
+
+    public function delPark()
+    {
+
+        Avtopark::delete((int)$this->data['id']);
+
+        $_SESSION['result'] = 'Парк Удалён';
+
+        header('Location: ../../catalog/park/all');
+
+    }
+
+
 
 }

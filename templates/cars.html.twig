@@ -10,53 +10,62 @@
 
 {% block content %}
 
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-8 text-center">
-                <div class="container">
-                    <h1>Авто</h1>
-                    <div class="row pb-1 border-bottom text-left text-black-50">
-                        <div class="col-md-12 p-0">
-                            <div class="col-md-8 flex-row d-flex p-0">
-                                <p class="m-0 col-md-6">Номер авто</p>
-                                <p class="m-0 col-md-6">Владелец</p>
-                            </div>
-                        </div>
-                    </div>
-                    {% for obj in cars  %}
-                    <div class="row pb-1 border-top text-left">
-                        <div class="col-md-12 p-0">
-                            <div class="col-md-8 flex-row d-flex p-0">
-                                <p class="m-0 col-md-6">{{ obj.num }}</p>
-                                <p class="m-0 col-md-6">{{ obj.name }}</p>
-                            </div>
-                        </div>
-                    </div>
-                        {% if obj.getParks() is not empty %}
-                            <h6 class="pl-3 text-left text-black-50">Привязано к парку:</h6>
-                            <div class="col-md-8 flex-row d-flex p-0 text-black-50 text-left">
-                                <p class="m-0 col-md-4">Название</p>
-                                <p class="m-0 col-md-4">Адрес</p>
-                                <p class="m-0 col-md-4">Расписание</p>
-                            </div>
-                            {% for avto in obj.getParks()  %}
-                                    <div class="text-left col-md-8 flex-row d-flex p-0 border-top">
-                                        <p class="m-0 col-md-4">{{ avto.name }}</p>
-                                        <p class="m-0 col-md-4">{{ avto.adres }}</p>
-                                        <p class="m-0 col-md-4">{{ avto.schedule  }}</p>
-                                    </div>
-                            {% endfor %}
-                        {% else %}
-                            <div class="text-left col-md-8 flex-row d-flex p-0 border-bottom">
-                                <p class="m-0 col-md-12">Нет привязки к парку</p>
-                            </div>
-                        {% endif %}
-                    {% endfor %}
-                </div>
+<div class="container">
+    <div class="row">
+        <h1 class="col-md-12 text-center">Авто</h1>
+    </div>
+    <div class="row">
+        <div class="col-md-6 text-black-50">
+            <div class="row">
+                <p class="col-md-6">Номер авто:</p>
+                <p class="col-md-6">Владелец:</p>
             </div>
         </div>
+        {#<div class="col-md-6">#}
+            {#<div class="row">#}
+                {#<p class="m-0 col-md-12">Отметить:</p>#}
+            {#</div>#}
+        {#</div>#}
     </div>
-
+    {% for obj in cars  %}
+        <div class="row border-top">
+            <div class="col-md-6">
+                <div class="row">
+                    <p class="m-0 col-md-6">{{ obj.num }}</p>
+                    <p class="m-0 col-md-6">{{ obj.name }}</p>
+                </div>
+            </div>
+            {#<div class="col-md-6">#}
+                {#<form action="">#}
+                    {#<div class="form-check form-check-inline">#}
+                        {#<input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">#}
+                    {#</div>#}
+                {#</form>#}
+            {#</div>#}
+        </div>
+        {% if obj.getParks() is not empty %}
+                <div class="row">
+                    <h6 class="col-md-12 ml-3 text-left text-black-50">Привязано к парку:</h6>
+                </div>
+                <div class="row ml-4  text-black-50">
+                    <p class="m-0 col-md-2">Название:</p>
+                    <p class="m-0 col-md-2">Адрес:</p>
+                    <p class="m-0 col-md-2">Расписание:</p>
+                </div>
+                {% for avto in obj.getParks()  %}
+                    <div class="row ml-4">
+                        <p class="m-0 col-md-2">{{ avto.name }}</p>
+                        <p class="col-md-2 m-0">{{ avto.adres }}</p>
+                        <p class="col-md-2 m-0">{{ avto.schedule }}</p>
+                    </div>
+                {% endfor %}
+        {% else %}
+            <div class="row">
+                <p class="col-md-12">нет привязки...</p>
+            </div>
+        {% endif %}
+    {% endfor %}
+</div>
 {% endblock %}
 
 

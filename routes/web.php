@@ -30,9 +30,12 @@ return [
     '/catalog/park/all' => 'park@showAll',
     '/catalog/cars/all' => 'cars@showAll',
     '/avtopark/create' => 'park@create',
-    '/login' => 'authorization@login',
     '/avtopark/edit/{id}' => 'park@edit',
-    '/avtopark/delete/park/{id}' => 'park@delete',
+    '/avtopark/save' => 'park@save',
+    '/login' => 'authorization@login',
+    '/avtopark/delete/{id}' => 'park@delPark',
+    '/car/delete/{id}' => 'cars@delete',
+    '/car/remove-from-park/{id}' => 'cars@removeFromPark',
     //'/logout' => 'authorization@logout',
 ]
 

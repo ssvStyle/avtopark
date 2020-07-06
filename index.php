@@ -12,9 +12,8 @@ use Core\FrontController;
  *
  */
 
+
 $myApp = new FrontController();
 
 $myApp->run();
-
-var_dump($_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
 
