@@ -34,9 +34,9 @@ class Authorization
 
         if ($hash !== null) {
 
-            $sql = 'SELECT * FROM users WHERE hash=\'' . $hash . '\'';
+            $sql = 'SELECT * FROM users WHERE hash=:hash';
 
-            if ($this->db->simpleQuery($sql)) {
+            if ($this->db->execute($sql, [':hash' => $hash])) {
 
                 return true;
 
@@ -55,10 +55,12 @@ class Authorization
     public function loginExist($login)
     {
 
-        $sql = 'SELECT * FROM users WHERE login=\'' . $login . '\'';
+        $sql = 'SELECT * FROM users WHERE login=:login';
 
-        if($this->db->simpleQuery($sql)) {
+        if($this->db->execute($sql, [':login' => $login])) {
+
             return true;
+
         }
         return false;
         
@@ -76,8 +78,7 @@ class Authorization
         if ($this->loginExist($login)) {
 
             $sql = 'SELECT * FROM users WHERE login=:login';
-            $data = [':login' => $login];
-            $user = $this->db->query($sql, $data, '\App\Models\User')[0];
+            $user = $this->db->query($sql, [':login' => $login], '\App\Models\User')[0];
 
             if ( password_verify($pass, $user->getPass()) ) {
                 $this->user = $user;
@@ -113,11 +114,11 @@ class Authorization
      */
     public function exitAuth()
     {
-        $hash = $_SESSION['UserHash'] ?: null;
+        $hashSession = $_SESSION['UserHash'] ?: null;
 
-        $sql = 'UPDATE users SET hash=:hash WHERE hash=\'' . $hash . '\'';
+        $sql = 'UPDATE users SET hash=:hash WHERE hash=:hashSession';
 
-        if ($this->db->execute($sql, [':hash'=> ''])) {
+        if ($this->db->execute($sql, [':hash'=> '', ':hashSession' => $hashSession])) {
 
             unset($_SESSION['UserHash']);
             session_regenerate_id(true);

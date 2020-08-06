@@ -14,17 +14,22 @@ use Core\BaseController;
 class Authorization extends BaseController
 {
 
-    public function login()
+    public function loginPage()
     {
         return $this->view
             ->display('auth/login.html.twig');
     }
 
-    public function register()
+    public function login()
     {
-        return $this->view->display('auth/register.html.twig');
+        var_dump($_POST);
     }
-
+    /*
+        public function register()
+        {
+            return $this->view->display('auth/register.html.twig');
+        }
+    */
     public function logout()
     {
         return 'Authorization Controller and method logout';
