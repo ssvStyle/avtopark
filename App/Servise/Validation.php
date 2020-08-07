@@ -5,7 +5,8 @@ namespace App\Servise;
 abstract class Validation
 {
 
-    public static function avtopark($post) {
+    public static function avtopark($post)
+    {
 
         $err = [];
         $emptyField = 'Пустое поле';
@@ -37,6 +38,21 @@ abstract class Validation
 
         return $err;
 
+    }
+
+    public static function checkFormAuth ($post)
+    {
+
+        $login = $post['login'] ?: false;
+        $pass= $post['pass'] ?: false;
+        $remember = $post['rememberMe'] ?? false;
+
+        if ($login && $pass) {
+
+            return ['login' => $login, 'pass' => $pass, 'rememberMe' => $remember];
+
+        }
+        return false;
     }
 
 }

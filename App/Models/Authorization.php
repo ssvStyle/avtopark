@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use \App\Db;
+use \App\Models\Db as db;
 
 class Authorization
 {
@@ -13,13 +13,13 @@ class Authorization
     protected $user;
 
     /**
-     * Authorization constructor.
+     * AuthServise constructor.
      * @param \App\Models\Db $db
      *
      */
     public function __construct(Db $db)
     {
-            $this->db = new $db();
+            $this->db = $db;
 
     }
 
@@ -28,7 +28,7 @@ class Authorization
      * 
      * @return bool
      */
-    public function adminVerify()
+    public function userVerify()
     {
         $hash = $_SESSION['UserHash'] ?: null;
 

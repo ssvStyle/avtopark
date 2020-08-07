@@ -1,15 +1,11 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: ssv
- * Date: 10.05.20
- * Time: 16:17
- */
 
 namespace App\Controllers;
 
 
+use App\Servise\Validation;
 use Core\BaseController;
+use App\Servise\AuthServise;
 
 class Authorization extends BaseController
 {
@@ -22,17 +18,22 @@ class Authorization extends BaseController
 
     public function login()
     {
-        var_dump($_POST);
-    }
-    /*
-        public function register()
-        {
-            return $this->view->display('auth/register.html.twig');
+        if (Validation::checkFormAuth($_POST)) {
+
+            AuthServise::setAuth(Validation::checkFormAuth($_POST));
+
+        } else {
+
+            $this->view->addGlobal('error', 'Неверный логин или пароль');
+            $this->loginPage();
+
         }
-    */
+
+    }
+
     public function logout()
     {
-        return 'Authorization Controller and method logout';
+        return 'AuthServise Controller and method logout';
     }
 
 }
