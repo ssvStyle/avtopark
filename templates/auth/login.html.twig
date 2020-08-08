@@ -17,11 +17,11 @@
             <div class="row">
                 <h3 class="col-md-12 text-center">Sign in</h3>
             </div>
-            {% if error %}
-                <div class="row ml-4 mr-4">
-                    <span class="alert alert-danger text-center col-md-12">{{ error }}</span>
-                </div>
-            {% endif %}
+                {% for error in errors %}
+                    <div class="row ml-4 mr-4 p-1">
+                        <span class="badge badge-pill badge-warning text-center col-md-12">{{ error }}</span>
+                    </div>
+                {% endfor %}
             <div class="row">
                 <div class="col-md-12">
                     <form method="POST" action="authorization">

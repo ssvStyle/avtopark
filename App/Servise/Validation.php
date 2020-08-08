@@ -2,7 +2,10 @@
 
 namespace App\Servise;
 
-abstract class Validation
+use App\Models\Authorization as AuthModel;
+use App\Models\Db;
+
+class Validation
 {
 
     public static function avtopark($post)
@@ -42,17 +45,30 @@ abstract class Validation
 
     public static function checkFormAuth ($post)
     {
+        $data = [];
+        $data['errors'] = [];
+        $data['login'] = $post['login'] ?: false;
+        $data['pass'] = $post['pass'] ?: false;
+        $data['remember'] = $post['rememberMe'] ?? false;
 
-        $login = $post['login'] ?: false;
-        $pass= $post['pass'] ?: false;
-        $remember = $post['rememberMe'] ?? false;
+        if (empty($data['login'])) {
+            $data['errors'][] = 'Поле логин не заполнено!';
+        } else {
+            $auth = new AuthModel(new Db());
 
-        if ($login && $pass) {
-
-            return ['login' => $login, 'pass' => $pass, 'rememberMe' => $remember];
-
+            if (!$auth->loginExist($data['login'])) {
+                $data['errors'][] = 'Пользователя с таким логином не существует!';
+            }
+            if (!$auth->loginAndPassValidation($data['login'], $data['pass'])) {
+                $data['errors'][] = 'Неверный пароль';
+            }
         }
-        return false;
+
+        if (empty($data['pass'])) {
+            $data['errors'][] = 'Поле пароль не заполнено!';
+        }
+
+        return $data;
     }
 
 }

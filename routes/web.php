@@ -34,6 +34,7 @@ return [
     '/avtopark/save' => 'park@save',
     '/login' => 'authorization@loginPage',
     '/authorization' => 'authorization@login',
+    '/logout' => 'authorization@logout',
     '/avtopark/delete/{id}' => 'park@delPark',
     '/car/delete/{id}' => 'cars@delete',
     '/car/remove-from-park/{id}' => 'cars@removeFromPark',

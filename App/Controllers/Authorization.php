@@ -2,8 +2,6 @@
 
 namespace App\Controllers;
 
-
-use App\Servise\Validation;
 use Core\BaseController;
 use App\Servise\AuthServise;
 
@@ -12,20 +10,21 @@ class Authorization extends BaseController
 
     public function loginPage()
     {
-        return $this->view
-            ->display('auth/login.html.twig');
+        return $this->view->display('auth/login.html.twig');
     }
 
     public function login()
     {
-        if (Validation::checkFormAuth($_POST)) {
+        $error = AuthServise::setAuth();
 
-            AuthServise::setAuth(Validation::checkFormAuth($_POST));
+        if ($error !== true) {
+
+            $this->view->addGlobal('errors', $error);
+            $this->loginPage();
 
         } else {
 
-            $this->view->addGlobal('error', 'Неверный логин или пароль');
-            $this->loginPage();
+            header('Location: home');
 
         }
 
@@ -33,7 +32,8 @@ class Authorization extends BaseController
 
     public function logout()
     {
-        return 'AuthServise Controller and method logout';
+        AuthServise::logout();
+        header('Location: home');
     }
 
 }

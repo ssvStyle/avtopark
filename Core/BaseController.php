@@ -4,6 +4,9 @@ namespace Core;
 
 use App\View;
 use Core\Interfaces\BaseController as BaseControllerInterfase;
+use App\Models\Authorization as AuthModel;
+use App\Models\Db;
+
 
 abstract class BaseController implements BaseControllerInterfase
 {
@@ -29,6 +32,19 @@ abstract class BaseController implements BaseControllerInterfase
             ]);
 
         $this->view->addGlobal('host', require __DIR__.'/../config/host.php');
+
+        $auth = new AuthModel(new Db());
+
+        if ($auth->userVerify()) {
+
+            $this->view->addGlobal('auth', true);
+
+        } else {
+
+            $auth->exitAuth();
+
+        }
+
     }
 
     /**
