@@ -3,7 +3,7 @@
 namespace App\Controllers;
 
 use Core\BaseController;
-use App\Servise\AuthServise;
+use App\Service\AuthService;
 
 class Authorization extends BaseController
 {
@@ -15,7 +15,7 @@ class Authorization extends BaseController
 
     public function login()
     {
-        $error = AuthServise::setAuth();
+        $error = AuthService::setAuth($_POST);
 
         if ($error !== true) {
 
@@ -32,7 +32,7 @@ class Authorization extends BaseController
 
     public function logout()
     {
-        AuthServise::logout();
+        AuthService::logout();
         header('Location: home');
     }
 

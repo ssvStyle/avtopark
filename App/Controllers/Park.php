@@ -2,75 +2,84 @@
 
 namespace App\Controllers;
 
-use App\Servise\Avtopark;
-use App\Servise\Validation;
+use App\Models\Db;
+use App\Service\Avtopark;
+use App\Service\Validation;
 use Core\BaseController;
 
 class Park extends BaseController
 {
+    protected $authStatus;
+
+    public function __construct()
+    {
+        parent::__construct();
+        $this->authStatus = $auth = new \App\Models\Authorization(new Db());
+    }
 
     public function showAll()
     {
-        $this->view->addGlobal('result', $_SESSION['result'] ?? '');
+
+        echo $this->view->display('park.html.twig', [
+            'avtopark' => Avtopark::get('park'),
+            'result' => $_SESSION['result'] ?? '',
+        ]);
 
         unset($_SESSION['result']);
-
-        $this->view->addGlobal('avtopark', Avtopark::get('park'));
-
-        return $this->view->display('park.html.twig');
     }
 
     public function create()
     {
 
-        $this->view->addGlobal('title', 'Добавить новый');
+        $this->access($this->authStatus->userStatusVerify('admin'));
 
-        $this->view->addGlobal('errors', $_SESSION['newApErr'] ?? '');
+        echo $this->view->display('editPark.html.twig', [
+            'title' => 'Добавить новый',
+            'errors' => $_SESSION['newApErr'] ?? '',
+            'avtoparkName' => $_POST['avtoparkName'] ?? '',
+            'avtoparkAdres' => $_POST['avtoparkAdres'] ?? '',
+            'avtoparkSchedule' => $_POST['avtoparkSchedule'] ?? '',
+        ]);
 
         unset($_SESSION['newApErr']);
-
-        $this->view->addGlobal('avtoparkName', $_POST['avtoparkName'] ?? '');
-
-        $this->view->addGlobal('avtoparkAdres', $_POST['avtoparkAdres'] ?? '');
-
-        $this->view->addGlobal('avtoparkSchedule', $_POST['avtoparkSchedule'] ?? '');
-
-        return $this->view->display('editPark.html.twig');
 
     }
 
     public function edit()
     {
+
+        $this->access($this->authStatus->userStatusVerify('admin'));
+
         $this->view->addGlobal('title', 'Редактировать');
 
         $avtopark = Avtopark::getById( (int)$this->data['id'], 'park' );
 
         if ($avtopark === null) {
 
-            $this->view->addGlobal('errors', ['notExist' => 'Такого парка не существует!']);
+            echo $this->view->display('editPark.html.twig', [
+                'errors' => ['notExist' => 'Такого парка не существует!'],
+                ]);
 
         } else {
 
-            $this->view->addGlobal('errors', $_SESSION['newApErr'] ?? '');
-
-            $this->view->addGlobal('avtoparkId', $avtopark->id);
-
-            $this->view->addGlobal('avtoparkName', $avtopark->name);
-
-            $this->view->addGlobal('avtoparkAdres', $avtopark->adres);
-
-            $this->view->addGlobal('avtoparkSchedule', $avtopark->schedule);
-
-            $this->view->addGlobal('cars', $avtopark->getCars());
+            echo $this->view->display('editPark.html.twig', [
+                'errors' => $_SESSION['newApErr'] ?? '',
+                'avtoparkId' => $avtopark->id,
+                'avtoparkName' => $avtopark->name,
+                'avtoparkAdres' => $avtopark->adres,
+                'avtoparkSchedule' => $avtopark->schedule,
+                'cars' => $avtopark->getCars()
+            ]);
 
         }
 
-        return $this->view->display('editPark.html.twig');
+
 
     }
 
     public function save()
     {
+        $this->access($this->authStatus->userStatusVerify('admin'));
 
         if (!empty($_POST['avtoparkId'])) {
 
@@ -120,6 +129,7 @@ class Park extends BaseController
 
     public function delPark()
     {
+        $this->access($this->authStatus->userStatusVerify('admin'));
 
         Avtopark::delete((int)$this->data['id']);
 

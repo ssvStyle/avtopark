@@ -1,17 +1,17 @@
 <?php
 
-namespace App\Servise;
+namespace App\Service;
 
 use App\Models\Authorization as AuthModel;
 use App\Models\Db;
 
 
-class AuthServise
+class AuthService
 {
 
-    public static function setAuth()
+    public static function setAuth($post)
     {
-        $userData = Validation::checkFormAuth($_POST);
+        $userData = Validation::checkFormAuth($post);
         $auth = new AuthModel(new Db());
 
         if (empty($userData['errors'])) {

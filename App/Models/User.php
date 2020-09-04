@@ -2,8 +2,10 @@
 
 namespace App\Models;
 
-class User
+class User extends Model
 {
+    const TABLE = 'users';
+
     public $id, $login, $pass, $sessionHash, $status;
 
     /**

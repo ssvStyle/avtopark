@@ -13,7 +13,7 @@ class Authorization
     protected $user;
 
     /**
-     * AuthServise constructor.
+     * AuthService constructor.
      * @param \App\Models\Db $db
      *
      */
@@ -45,6 +45,34 @@ class Authorization
 
         return false;
         
+    }
+
+    /**
+     * @param $status
+     *
+     * @return bool
+     */
+
+    public function userStatusVerify($status = '')
+    {
+        if ($this->userVerify()) {
+
+            $hash = $_SESSION['UserHash'];
+
+            $sql = 'SELECT status FROM users
+                    LEFT JOIN usersStatus ON users.status_id=usersStatus.id WHERE sessionHash=:hash AND status=:status';
+
+            $rez = $this->db->query($sql, [':hash' => $hash, ':status' => $status])[0]['status'] ?? false;
+
+            if ($status === $rez) {
+
+                return true;
+
+            }
+        }
+
+        return false;
+
     }
 
     /**

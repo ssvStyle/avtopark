@@ -25,7 +25,9 @@
                     <p class="col-md-3">Название</p>
                     <p class="col-md-3">Адрес</p>
                     <p class="col-md-3">Расписание</p>
-                    <p class="col-md-3 text-center">Редактировать</p>
+                    {% if User %}
+                        <p class="col-md-3 text-center">Редактировать</p>
+                    {% endif %}
                 </div>
             </div>
             {% for obj in avtopark  %}
@@ -35,11 +37,13 @@
                         <p class="m-0 col-md-3">{{ obj.name }}</p>
                         <p class="m-0 col-md-3">{{ obj.adres }}</p>
                         <p class="m-0 col-md-3">{{ obj.schedule  }}</p>
-                        <div class="col-md-3 text-center">
-                            <a href="avtopark/edit/{{ obj.id }}">
-                                <img src="public/img/edit.png" alt="Редактировать" width="20px">
-                            </a>
-                        </div>
+                        {% if User %}
+                            <div class="col-md-3 text-center">
+                                <a href="avtopark/edit/{{ obj.id }}">
+                                    <img src="public/img/edit.png" alt="Редактировать" width="20px">
+                                </a>
+                            </div>
+                        {% endif %}
 
                     </div>
                 </div>
